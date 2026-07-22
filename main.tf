@@ -27,16 +27,16 @@ resource "aws_instance" "workstation" {
   )
 }
 
-resource "terraform_data" "cluster" {
+resource "terraform_data" "cluster_destroy" {
   input = {
     host     = aws_instance.workstation.public_ip
     password = var.ssh_password
   }
 
   provisioner "remote-exec" {
-    #when = destroy
+    when = destroy
     inline = [
-      "eksctl create cluster -f /home/ec2-user/eksctl.yaml"
+      "eksctl delete cluster -f /home/ec2-user/eksctl/eks.yaml --wait"
     ]
     connection {
       type     = "ssh"
@@ -46,26 +46,6 @@ resource "terraform_data" "cluster" {
     }
   }
 }
-
-# resource "terraform_data" "cluster_destroy" {
-#   input = {
-#     host     = aws_instance.workstation.public_ip
-#     password = var.ssh_password
-#   }
-
-#   provisioner "remote-exec" {
-#     when = destroy
-#     inline = [
-#       "eksctl delete cluster -f /home/ec2-user/eksctl-setup/eksctl.yaml --wait"
-#     ]
-#     connection {
-#       type     = "ssh"
-#       host     = self.input.host
-#       user     = "ec2-user"
-#       password = self.input.password
-#     }
-#   }
-# }
 
 resource "aws_security_group" "workstation" {
   name        = "allow-all-workstation" # this is for AWS account
