@@ -27,6 +27,25 @@ resource "aws_instance" "workstation" {
   )
 }
 
+resource "terraform_data" "cluster" {
+  input = {
+    host     = aws_instance.workstation.public_ip
+    password = var.ssh_password
+  }
+
+  provisioner "remote-exec" {
+    #when = destroy
+    inline = [
+      "eksctl create cluster -f /home/ec2-user/eksctl-setup/eksctl.yaml "
+    ]
+    connection {
+      type     = "ssh"
+      host     = self.input.host
+      user     = "ec2-user"
+      password = self.input.password
+    }
+  }
+}
 # resource "terraform_data" "cluster_destroy" {
 #   input = {
 #     host     = aws_instance.workstation.public_ip
