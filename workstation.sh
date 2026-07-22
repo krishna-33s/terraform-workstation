@@ -57,7 +57,7 @@ chown -R ec2-user:ec2-user /home/ec2-user/.aws
 chmod 600 /home/ec2-user/.aws/credentials
 chmod 600 /home/ec2-user/.aws/config
 
-Clone eksctl repo and create EKS cluster
+#Clone eksctl repo and create EKS cluster
 cd /home/ec2-user
 sudo -u ec2-user git clone https://github.com/krishna-33s/eksctl-setup.git
 cd eksctl-setup
