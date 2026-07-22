@@ -36,7 +36,7 @@ resource "terraform_data" "cluster" {
   provisioner "remote-exec" {
     #when = destroy
     inline = [
-      "/usr/local/bin/eksctl create cluster -f /home/ec2-user/eksctl.yaml"
+      "eksctl create cluster -f /home/ec2-user/eksctl.yaml"
     ]
     connection {
       type     = "ssh"
